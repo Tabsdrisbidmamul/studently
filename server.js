@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
 const dotenv = require('dotenv');
 
+// CATCH ERRORS THAT ARE NOT PROMISE RELATED
 process.on('uncaughtException', (err) => {
   console.log('UNHANDLED EXCEPTION! Shutting down...');
   // console.log(err.stack);
@@ -9,8 +9,8 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
+// READ IN ENV VARS INTO SERVER
 dotenv.config({ path: './config.env' });
-
 const app = require('./app');
 
 // PLACE PASSWORD IN MONGO CONNECTION STRING
@@ -36,10 +36,19 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
+// CATCH UNHANDLED PROMISES
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! Shutting down...');
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
+  });
+});
+
+// FOR HEROKU ON THEIR 24/7 SIGTERM SIGNAL
+process.on('SIGTERM', () => {
+  console.log('🖐 SIGTERM RECEIVED. Shutting down gracefully...');
+  server.close(() => {
+    console.log('🧨 Process terminated!');
   });
 });

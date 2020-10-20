@@ -7,6 +7,10 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
+
+const globalErrorHandler = require('./controllers/errorController');
+const AppError = require('./utils/appError');
 
 const app = express();
 
@@ -16,6 +20,7 @@ app.use(
     credentials: true,
   })
 );
+
 // SET Security HTTP headers
 // app.use(helmet());
 app.use(
@@ -70,6 +75,9 @@ app.use(
   })
 );
 
+// TO COMPRESS ALL INCOMING TEXT REQUEST AND COMPRESS THEM USING GZIP ETC.
+app.use(compression());
+
 // ROUTES
 
 // UNHANDLED ROUTE ERROR MIDDLEWARE
@@ -77,7 +85,7 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 400));
 });
 
-// GLOBAL ERROR HANDLER MIDDLEWARE
+// GLOBAL ERROR HANDLER MIDDLEWARE: SIGNATURE (ERROR, REQ, RES, NEXT)
 app.use(globalErrorHandler);
 
 module.exports = app;
