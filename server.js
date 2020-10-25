@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 // CATCH ERRORS THAT ARE NOT PROMISE RELATED
 process.on('uncaughtException', (err) => {
   console.log('UNHANDLED EXCEPTION! Shutting down...');
-  // console.log(err.stack);
+  console.log(err.stack);
   console.log(err.name, err.message);
   process.exit(1);
 });
@@ -46,9 +46,9 @@ process.on('unhandledRejection', (err) => {
 });
 
 // FOR HEROKU ON THEIR 24/7 SIGTERM SIGNAL
-process.on('SIGTERM', () => {
-  console.log('🖐 SIGTERM RECEIVED. Shutting down gracefully...');
-  server.close(() => {
-    console.log('🧨 Process terminated!');
-  });
-});
+// process.on('SIGTERM', () => {
+//   console.log('🖐 SIGTERM RECEIVED. Shutting down gracefully...');
+//   server.close(() => {
+//     console.log('🧨 Process terminated!');
+//   });
+// });

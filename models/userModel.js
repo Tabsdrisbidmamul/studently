@@ -3,118 +3,100 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcryptjs = require('bcryptjs');
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, 'You must have a name'],
-      minlength: [5, 'A name must have more than 5 characters'],
-      maxlength: [30, 'A name cannot have more than 30 characters'],
-    },
-
-    email: {
-      type: String,
-      required: [true, 'You must have an email'],
-      maxlength: [50, 'The email entered is too long'],
-      unique: true,
-      lowercase: true,
-      validate: [validator.isEmail, 'Your email is not valid'],
-    },
-
-    role: {
-      type: String,
-      enum: ['student', 'parent', 'teacher'],
-      default: 'student',
-    },
-
-    photo: {
-      type: String,
-      default: 'default.jpg',
-    },
-
-    password: {
-      type: String,
-      required: [true, 'You must give a password'],
-      minlength: [
-        8,
-        'Your password is too short, you must enter more than 8 characters',
-      ],
-      validate: [
-        function (val) {
-          const regex = RegExp('^[-\\w@!$£%^&*+]+$');
-          return regex.test(val);
-        },
-        'Non-special characters are not allowed, please use a mix of letters and numbers',
-      ],
-      select: false,
-    },
-
-    passwordConfirm: {
-      type: String,
-      required: [true, 'Please confirm your password'],
-      minlength: [
-        8,
-        'Your password is too short, you must enter more than 8 characters',
-      ],
-      validate: [
-        function (val) {
-          return val === this.password;
-        },
-        'Password do not match',
-      ],
-      select: false,
-    },
-
-    active: {
-      type: Boolean,
-      default: true,
-      select: false,
-    },
-
-    // Field is only given to a user when they have changed their password, if not this field will not exist in the user document
-    passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'A user must have a name'],
+    maxlength: [30, 'You cannot enter more than 30 characters for a username'],
+    minlength: [5, 'You must enter more than 10 characters for a username'],
   },
-  {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
-);
+
+  email: {
+    type: String,
+    required: [true, 'A user must have an email'],
+    maxlength: [50, 'The email entered is too long'],
+    unique: true,
+    lowercase: true,
+    validate: [validator.isEmail, 'Your email is not valid'],
+  },
+
+  role: {
+    type: String,
+    enum: ['student', 'parent', 'teacher', 'admin'],
+    default: 'student',
+  },
+
+  photo: {
+    type: String,
+    default: 'default.jpg',
+  },
+
+  password: {
+    type: String,
+    required: [true, 'You must supply a password'],
+    minlength: [5, 'A password must be longer than 5 characters'],
+    validate: [
+      function (val) {
+        const regex = RegExp('^[-\\w@!$£%^&*+]+$');
+        return regex.test(val);
+      },
+      'Non-special characters are not allowed, please use a mix of letters and numbers',
+    ],
+    select: false,
+  },
+
+  passwordConfirm: {
+    type: String,
+    required: [true, 'Please confirm your password'],
+    minlength: [8, 'A password must be longer than 8 characters'],
+    validate: [
+      function (val) {
+        return val === this.password;
+      },
+      'Your password does not match the one you entered',
+    ],
+    select: false,
+  },
+
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false,
+  },
+});
 
 // SCHEMA MIDDLEWARE
 
 // hash password
 userSchema.pre('save', async function (next) {
+  // Only run when password was modified
   if (!this.isModified('password')) return next();
 
   // hash and salt password with cost of 12
   this.password = await bcryptjs.hash(this.password, 12);
 
-  // delete passwordConfirm field
+  // delete password confirm field
   this.passwordConfirm = undefined;
 
   next();
 });
 
-// create timestamp for a changed password
+// create timestamp for changed password
 userSchema.pre('save', function (next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password') || this.isNew) next();
 
-  // Subtract 1000ms for error margins
   this.passwordChangedAt = Date.now() - 1000;
   next();
 });
 
-// Retrieve only active users
 userSchema.pre(/^find/, function (next) {
-  this.find({ active: { $ne: true } });
+  this.find({ active: { $eq: true } });
   next();
 });
 
-// INSTANCE METHODS
-
-// Password checker
 userSchema.methods.correctPassword = async function (
   inputPassword,
   userPassword
@@ -122,22 +104,21 @@ userSchema.methods.correctPassword = async function (
   return await bcryptjs.compare(inputPassword, userPassword);
 };
 
-// Check if the password has been modified
 userSchema.methods.modifiedPassword = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
-    const changedTimeStamp = parseInt(
+    const changedTimestamp = parseInt(
       this.passwordChangedAt.getTime() / 1000,
       10
     );
 
-    // Password HAS been changed
-    return JWTTimestamp < changedTimeStamp;
+    // true: password HAS been changed
+    return JWTTimestamp < changedTimestamp;
   }
-  // Password has NOT been changed
+
+  // false: password NOT been changed
   return false;
 };
 
-// Set the passwordResetToken
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
   this.passwordResetToken = crypto
@@ -145,7 +126,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest('hex');
 
-  // console.log({ resetToken }, this.passwordResetToken);
+  console.log({ resetToken }, this.passwordResetToken);
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 

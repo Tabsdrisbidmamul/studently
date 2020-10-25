@@ -56,6 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    // role: req.body.role,
   });
   // const url = `${req.protocol}://${req.get('host')}/myAccount`;
   // console.log(url);
@@ -92,6 +93,9 @@ exports.logout = (req, res) => {
     httpOnly: true,
   });
 
+  res.clearCookie('jwt', {
+    httpOnly: true,
+  });
   res.status(200).json({ status: 'success' });
 };
 

@@ -19,14 +19,14 @@ const cardSchema = new mongoose.Schema(
 
     user: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Card',
+      ref: 'User',
       required: [true, 'A card must have a User'],
     },
 
-    deck: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Deck',
-    },
+    // deck: {
+    //   type: mongoose.Schema.ObjectId,
+    //   ref: 'Deck',
+    // },
   },
   {
     toJSON: { virtuals: true },
