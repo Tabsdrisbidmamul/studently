@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const Email = require('../utils/email');
 
 // Easy command line script to generate secret key for the JWT signature
 // node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
@@ -56,9 +57,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
-  const url = `${req.protocol}://${req.get('host')}/myAccount`;
-  console.log(url);
-  // await new Email(newUser, url).sendWelcome();
+  // const url = `${req.protocol}://${req.get('host')}/myAccount`;
+  // console.log(url);
+  await new Email(newUser).sendWelcome();
 
   createSendJWT(newUser, 201, req, res);
 });
@@ -161,10 +162,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send it to the user's email
   try {
-    const resetURL = `${req.protocol}://${req.get(
-      'host'
-    )}/reset-password/${resetToken}`;
-    await new Email(user, resetURL).sendPasswordRest();
+    // const resetURL = `${req.protocol}://${req.get(
+    //   'host'
+    // )}/reset-password/${resetToken}`;
+    await new Email(user).sendPasswordRest();
 
     res.status(200).json({
       status: 'success',
