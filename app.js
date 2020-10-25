@@ -9,6 +9,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 
+const userRouter = require('./routes/userRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -79,6 +80,7 @@ app.use(
 app.use(compression());
 
 // ROUTES
+app.use('/api/v0/users', userRouter);
 
 // UNHANDLED ROUTE ERROR MIDDLEWARE
 app.all('*', (req, res, next) => {
