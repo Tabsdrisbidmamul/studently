@@ -1,12 +1,13 @@
 {
-  "name": "natours",
+  "name": "Studently",
   "version": "1.0.0",
-  "description": "Learning node, express and mongoDB",
-  "main": "app.js",
+  "description": "Studently API",
+  "main": "server.js",
   "scripts": {
     "start:dev": "nodemon ./server.js",
     "start:prod": "set NODE_ENV=production&& nodemon ./server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "test": "mocha --timeout 10000"
   },
   "author": "Idris K",
   "license": "ISC",
@@ -39,6 +40,8 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^7.7.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -47,6 +50,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
+    "mocha": "^8.2.0",
     "prettier": "^2.0.5"
   },
   "engines": {

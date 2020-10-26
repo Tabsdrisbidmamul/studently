@@ -13,7 +13,7 @@ router.get('/logout', authController.logout);
 router.use(authController.protect);
 
 // Everything below this point is for admins only
-router.use(authController.restrictTo('admin'));
+router.use(authController.restrictTo('admin', 'teacher'));
 
 router.route('/').get(userController.getAllUsers);
 router

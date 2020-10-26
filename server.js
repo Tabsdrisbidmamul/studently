@@ -52,3 +52,5 @@ process.on('unhandledRejection', (err) => {
 //     console.log('🧨 Process terminated!');
 //   });
 // });
+
+module.exports = server;
