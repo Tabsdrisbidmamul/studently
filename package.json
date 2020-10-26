@@ -7,7 +7,7 @@
     "start:dev": "nodemon ./server.js",
     "start:prod": "set NODE_ENV=production&& nodemon ./server.js",
     "debug": "ndb server.js",
-    "test": "mocha --timeout 10000"
+    "test": "mocha --timeout 100000"
   },
   "author": "Idris K",
   "license": "ISC",
@@ -42,6 +42,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "chai-like": "^1.1.1",
+    "chai-things": "^0.2.0",
     "eslint": "^7.7.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
