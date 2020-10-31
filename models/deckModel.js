@@ -11,9 +11,23 @@ const deckSchema = new mongoose.Schema(
     },
 
     user: {
-      type: mongoose.Schema.toObject,
+      type: mongoose.Schema.ObjectId,
       ref: 'User',
     },
+
+    cards: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Card',
+        required: [true, 'A deck must have card(s)'],
+        validate: [
+          function (val) {
+            return val >= 1 && val <= 10;
+          },
+          'A deck can be between 1 and 10 cards',
+        ],
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -21,8 +35,15 @@ const deckSchema = new mongoose.Schema(
   }
 );
 
-deckSchema.virtual('cards', {
-  ref: 'Card',
-  foreignField: 'deck',
-  localField: '_id',
+// MIDDLEWARE
+
+// populate the cards when queried
+deckSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'cards',
+  });
+  next();
 });
+
+const Deck = mongoose.model('Deck', deckSchema);
+module.exports = Deck;

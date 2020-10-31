@@ -3,72 +3,91 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcryptjs = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A user must have a name'],
-    maxlength: [30, 'You cannot enter more than 30 characters for a username'],
-    minlength: [5, 'You must enter more than 10 characters for a username'],
-  },
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'A user must have a name'],
+      maxlength: [
+        30,
+        'You cannot enter more than 30 characters for a username',
+      ],
+      minlength: [5, 'You must enter more than 10 characters for a username'],
+    },
 
-  email: {
-    type: String,
-    required: [true, 'A user must have an email'],
-    maxlength: [50, 'The email entered is too long'],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, 'Your email is not valid'],
-  },
+    email: {
+      type: String,
+      required: [true, 'A user must have an email'],
+      maxlength: [50, 'The email entered is too long'],
+      unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, 'Your email is not valid'],
+    },
 
-  role: {
-    type: String,
-    enum: ['student', 'parent', 'teacher', 'admin'],
-    default: 'student',
-  },
+    role: {
+      type: String,
+      enum: ['student', 'teacher', 'admin'],
+      default: 'student',
+    },
 
-  photo: {
-    type: String,
-    default: 'default.jpg',
-  },
+    photo: {
+      type: String,
+      default: 'default.jpg',
+    },
 
-  password: {
-    type: String,
-    required: [true, 'You must supply a password'],
-    minlength: [5, 'A password must be longer than 5 characters'],
-    validate: [
-      function (val) {
-        const regex = RegExp('^[-\\w@!$£%^&*+]+$');
-        return regex.test(val);
-      },
-      'Non-special characters are not allowed, please use a mix of letters and numbers',
-    ],
-    select: false,
-  },
+    password: {
+      type: String,
+      required: [true, 'You must supply a password'],
+      minlength: [5, 'A password must be longer than 5 characters'],
+      validate: [
+        function (val) {
+          const regex = RegExp('^[-\\w@!$£%^&*+]+$');
+          return regex.test(val);
+        },
+        'Non-special characters are not allowed, please use a mix of letters and numbers',
+      ],
+      select: false,
+    },
 
-  passwordConfirm: {
-    type: String,
-    required: [true, 'Please confirm your password'],
-    minlength: [8, 'A password must be longer than 8 characters'],
-    validate: [
-      function (val) {
-        return val === this.password;
-      },
-      'Your password does not match the one you entered',
-    ],
-    select: false,
-  },
+    passwordConfirm: {
+      type: String,
+      required: [true, 'Please confirm your password'],
+      minlength: [8, 'A password must be longer than 8 characters'],
+      validate: [
+        function (val) {
+          return val === this.password;
+        },
+        'Your password does not match the one you entered',
+      ],
+      select: false,
+    },
 
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
+    // These only exist if a use has changed their password
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
   },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+
+// VIRTUALS
+
+// Teachers only, create a non-persistent field that references teacher to classroom
+userSchema.virtual('classroomTeacher', {
+  ref: 'Classroom',
+  foreignField: 'teacher',
+  localField: '_id',
 });
 
-// SCHEMA MIDDLEWARE
+// MIDDLEWARE
 
 // hash password
 userSchema.pre('save', async function (next) {
@@ -86,7 +105,7 @@ userSchema.pre('save', async function (next) {
 
 // create timestamp for changed password
 userSchema.pre('save', function (next) {
-  if (!this.isModified('password') || this.isNew) next();
+  if (!this.isModified('password') || this.isNew) return next();
 
   this.passwordChangedAt = Date.now() - 1000;
   next();

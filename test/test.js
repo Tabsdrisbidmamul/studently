@@ -1,33 +1,16 @@
+/* eslint-disable no-undef */
+/* eslint-disable node/no-unpublished-require */
 const mongoose = require('mongoose');
 
 const chai = require('chai');
 const should = require('chai').should();
 const chaiHttp = require('chai-http');
-const { expect } = require('chai');
+// const { expect } = require('chai');
 const chaiLike = require('chai-like');
 const chaiThings = require('chai-things');
 
 const server = require('../server');
 const Card = require('../models/cardModel');
-
-// Testing the tests
-// const addTwoNumbers = require('../addTwoNumbers');
-
-// describe('addTwoNumbers', () => {
-//   it('should add two numbers', () => {
-//     // 1. Arrange
-//     const x = 5;
-//     const y = 1;
-
-//     const sum1 = x + y;
-
-//     // 2. Act
-//     const sum2 = addTwoNumbers(x, y);
-
-//     // 3. Assert
-//     expect(sum2).to.be.equal(sum1);
-//   });
-// });
 
 chai.use(chaiHttp);
 chai.use(chaiLike);
@@ -52,7 +35,7 @@ describe('Cards', () => {
           res.body.should.have.property('data');
           res.body.should.have.nested.property('data.card');
 
-          const card = res.body.data.card;
+          const { card } = res.body.data;
           card.should.be.a('array');
 
           card.forEach((item) => {

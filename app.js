@@ -11,6 +11,8 @@ const compression = require('compression');
 
 const userRouter = require('./routes/userRoutes');
 const cardRouter = require('./routes/cardRoutes');
+const deckRouter = require('./routes/deckRoutes');
+const classroomRouter = require('./routes/classroomRoutes');
 const globalErrorHandler = require('./controllers/errorController');
 const AppError = require('./utils/appError');
 
@@ -83,6 +85,8 @@ app.use(compression());
 // ROUTES
 app.use('/api/v0/users', userRouter);
 app.use('/api/v0/cards', cardRouter);
+app.use('/api/v0/decks', deckRouter);
+app.use('/api/v0/classroom', classroomRouter);
 
 // UNHANDLED ROUTE ERROR MIDDLEWARE
 app.all('*', (req, res, next) => {

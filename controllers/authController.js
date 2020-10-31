@@ -6,6 +6,7 @@ const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Email = require('../utils/email');
+const filterBody = require('../utils/filterObj');
 
 // Easy command line script to generate secret key for the JWT signature
 // node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
@@ -56,7 +57,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    // role: req.body.role,
+    role: req.body.role,
   });
   // const url = `${req.protocol}://${req.get('host')}/myAccount`;
   // console.log(url);
