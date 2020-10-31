@@ -15,19 +15,21 @@ const deckSchema = new mongoose.Schema(
       ref: 'User',
     },
 
-    cards: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Card',
-        required: [true, 'A deck must have card(s)'],
-        validate: [
-          function (val) {
-            return val >= 1 && val <= 10;
-          },
-          'A deck can be between 1 and 10 cards',
-        ],
-      },
-    ],
+    cards: {
+      type: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: 'Card',
+        },
+      ],
+      required: [true, 'A deck must have cards'],
+      validate: [
+        function (val) {
+          return val.length >= 1 && val.length <= 10;
+        },
+        'A deck must have at at least 1 card and no more than 10 cards',
+      ],
+    },
   },
   {
     toJSON: { virtuals: true },

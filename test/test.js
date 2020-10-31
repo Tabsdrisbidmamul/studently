@@ -22,7 +22,7 @@ describe('Cards', () => {
   //   Card.remove({}, (err) => done());
   // });
 
-  describe('/GET card', () => {
+  describe('/GET cards', () => {
     it('It should GET all the cards', (done) => {
       chai
         .request(server)
@@ -44,6 +44,28 @@ describe('Cards', () => {
             item.should.have.property('user');
             item.should.have.property('_id');
           });
+
+          done();
+        });
+    });
+  });
+
+  describe('/POST card', () => {
+    it('it should not POST a card with an answer field', (done) => {
+      const card = {
+        question: 'What is a Card?',
+        user: '5f95d0b7466b4124bc99233a',
+      };
+
+      chai
+        .request(server)
+        .post('/api/v0/cards')
+        .send(card)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('status');
+          res.body.should.have.property('message');
 
           done();
         });

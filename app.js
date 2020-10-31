@@ -86,7 +86,7 @@ app.use(compression());
 app.use('/api/v0/users', userRouter);
 app.use('/api/v0/cards', cardRouter);
 app.use('/api/v0/decks', deckRouter);
-app.use('/api/v0/classroom', classroomRouter);
+app.use('/api/v0/classrooms', classroomRouter);
 
 // UNHANDLED ROUTE ERROR MIDDLEWARE
 app.all('*', (req, res, next) => {
