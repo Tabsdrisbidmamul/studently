@@ -16,34 +16,6 @@ const classroomSchema = new mongoose.Schema(
       required: [true, 'A classroom must have a teacher'],
     },
 
-    // teacher: {
-    //   type: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: 'User',
-    //   },
-    //   required: [true, 'A classroom must have a teacher'],
-    //   validate: [
-    //     function (val) {
-    //       return val.role === 'teacher';
-    //     },
-    //     'You are not a teacher',
-    //   ],
-    // },
-
-    // students: [
-    //   {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: 'User',
-    //     required: [true, 'A classroom must have students'],
-    //     validate: [
-    //       function (val) {
-    //         return val >= 1 && val <= 10;
-    //       },
-    //       'A classroom can have between 1 and 10 students',
-    //     ],
-    //   },
-    // ],
-
     students: {
       type: [
         {
