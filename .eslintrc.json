@@ -1,6 +1,15 @@
 {
   "extends": ["airbnb", "prettier", "plugin:node/recommended"],
   "plugins": ["prettier"],
+  "overrides": [
+    {
+      "files": "test/*",
+      "rules": {
+        "node/no-unpublished-require": 0,
+        "node/no-missing-require": 0
+      }
+    }
+  ],
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "spaced-comment": "off",
