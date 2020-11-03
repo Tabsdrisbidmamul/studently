@@ -17,7 +17,6 @@ class APIFeatures {
 
     // FILTER ON ALL THE RESULTS RETRIEVED
     this.query = this.query.find(JSON.parse(queryStr));
-    // let query = Tour.find(JSON.parse(queryStr))
 
     // Return the entire object so that we can chain methods on it
     return this;
@@ -52,11 +51,6 @@ class APIFeatures {
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);
-
-    // if (this.queryString.page) {
-    //   const numTours = await this.query.countDocuments(JSON.parse(queryStr));
-    //   if (numTours <= skip) throw new Error('This page does not exist');
-    // }
 
     return this;
   }

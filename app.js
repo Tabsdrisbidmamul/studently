@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -55,8 +56,8 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // body parser, reading data from body into req.body
-// middleware that sits in the middle of req(uests) and res(ponse) - we do this to get access to the body of a HTTP request
 app.use(express.json({ limit: '10kb' }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 
 // Data sanitization against NoSQL query injections
@@ -82,7 +83,7 @@ app.use(
 // TO COMPRESS ALL INCOMING TEXT REQUEST AND COMPRESS THEM USING GZIP ETC.
 app.use(compression());
 
-// ROUTES
+// ALL ROUTES
 app.use('/api/v0/users', userRouter);
 app.use('/api/v0/cards', cardRouter);
 app.use('/api/v0/decks', deckRouter);

@@ -20,10 +20,6 @@ const generateJWT = (id) => {
 const createSendJWT = (user, statusCode, req, res) => {
   const token = generateJWT(user._id);
 
-  /**
-   * COOKIE
-   * the name of the cookie, its value and options (expires, secure etc..)
-   */
   res.cookie('jwt', token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -57,6 +53,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    // remove in prod
     role: req.body.role,
   });
   // const url = `${req.protocol}://${req.get('host')}/myAccount`;
@@ -73,7 +70,8 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password) {
     return next(new AppError('Please provide email and password!', 400));
   }
-  // 2) Check if user exists && password is correct
+
+  // 2) Check if user exists and password is correct
   const user = await User.findOne({ email }).select('+password +active');
 
   if (
@@ -94,6 +92,7 @@ exports.logout = (req, res) => {
     httpOnly: true,
   });
 
+  // fix for when the cookie was not clearing in the browser's cookie jar
   res.clearCookie('jwt', {
     httpOnly: true,
   });
@@ -137,7 +136,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // GRANT ACCESS TO PROTECTED ROUTE
-  req.user = currentUser; // add attribute user to the request object to be used in the next middleware function
+  req.user = currentUser; // add user details to the req obj
   next();
 });
 

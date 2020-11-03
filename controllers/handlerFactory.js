@@ -91,7 +91,6 @@ exports.getAll = (Model) =>
     const docs = await features.query;
     const modelName = getModelName(Model);
 
-    // SEND RESPONSE
     res.status(200).json({
       status: 'success',
       results: docs.length,

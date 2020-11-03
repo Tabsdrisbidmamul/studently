@@ -94,8 +94,8 @@ module.exports = () => {
     describe('/GET/:id card', () => {
       before('Create test card 2', async () => {
         card = new Card({
-          question: 'CARD 2',
-          answer: 'ANS 2',
+          question: 'What is a Card?',
+          answer: 'What is an Answer?',
           user: '5f95d0b7466b4124bc99233a',
         });
 
@@ -138,8 +138,8 @@ module.exports = () => {
     describe('/PUT/:id card', () => {
       before('Create test card 3', async () => {
         card = new Card({
-          question: 'CARD 3',
-          answer: 'ANS 3',
+          question: 'What is a Card?',
+          answer: 'What is an Answer?',
           user: '5f95d0b7466b4124bc99233a',
         });
 
@@ -148,8 +148,8 @@ module.exports = () => {
 
       after('Delete test card 3', async () => {
         await Card.findOneAndDelete({
-          question: 'CARD 3 (UPDATE)',
-          answer: 'ANS 3 (UPDATE)',
+          question: 'What is a Card? (UPDATE)',
+          answer: 'What is an Answer? (UPDATE)',
         });
       });
 
@@ -157,7 +157,10 @@ module.exports = () => {
         chai
           .request(server)
           .patch(`/api/v0/cards/${card.id}`)
-          .send({ question: 'CARD 3 (UPDATE)', answer: 'ANS 3 (UPDATE)' })
+          .send({
+            question: 'What is a Card? (UPDATE)',
+            answer: 'What is an Answer? (UPDATE)',
+          })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
@@ -179,8 +182,8 @@ module.exports = () => {
     describe('/DELETE/:id card', () => {
       before('Create test card 4', async () => {
         card = new Card({
-          question: 'CARD 4',
-          answer: 'ANS 4',
+          question: 'What is a Card?',
+          answer: 'What is an Answer?',
           user: '5f95d0b7466b4124bc99233a',
         });
 
