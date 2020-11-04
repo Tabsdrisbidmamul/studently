@@ -7,7 +7,7 @@
     "start:dev": "set NODE_ENV=development&& nodemon ./server.js",
     "start:prod": "nodemon ./server.js",
     "debug": "ndb server.js",
-    "test": "mocha --timeout 100000 --exit"
+    "test": "mocha test/test.js --timeout 100000 --exit"
   },
   "author": "Idris K",
   "license": "ISC",

@@ -37,14 +37,14 @@ cardSchema.index({ user: 1 });
 // MIDDLEWARE
 
 // Populate the user field when queried
-cardSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'user',
-    select: 'name role photo',
-  });
+// cardSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: 'user',
+//     select: 'name role photo',
+//   });
 
-  next();
-});
+//   next();
+// });
 
 const Card = mongoose.model('Card', cardSchema);
 module.exports = Card;

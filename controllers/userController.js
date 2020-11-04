@@ -1,26 +1,20 @@
 const User = require('../models/userModel');
 const Card = require('../models/cardModel');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
+const Deck = require('../models/deckModel');
+const Classroom = require('../models/classroomModel');
 const factory = require('./handlerFactory');
 
-exports.getAllUsers = factory.getAll(User);
-// exports.deleteUser = factory.deleteOne(User);
-
 // admin only
+exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
 
-exports.getMyCards = catchAsync(async (req, res, next) => {
-  // 1. Find all cards to that user id
-  const cards = await Card.find({ user: req.user.id });
+// Registered Users Only
+exports.getMyCards = factory.getAll(Card, 'user');
+exports.getMyDecks = factory.getAll(Deck, 'user');
+exports.getTeacherClassrooms = factory.getAll(Classroom, 'teacher');
+exports.getStudentClassrooms = factory.getAll(Classroom, 'student');
 
-  res.status(200).json({
-    status: 'success',
-    results: cards.length,
-    data: {
-      cards,
-    },
-  });
-});
+// Teachers and Admins only
+exports.getAllStudents = factory.getAll(User, { role: 'student' });

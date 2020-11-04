@@ -4,6 +4,22 @@ const APIFeatures = require('../utils/apiFeatures');
 
 const getModelName = (Model) => Model.modelName.toLowerCase();
 
+// closures were returning different req obj, call fn where req obj is the same
+const filterUser = (role, req) => {
+  let filter = {};
+  switch (role) {
+    case 'user':
+      filter = { user: req.user.id };
+      break;
+    case 'teacher':
+      filter = { teacher: req.user.id };
+      break;
+    default:
+      break;
+  }
+  return filter;
+};
+
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
@@ -77,8 +93,9 @@ exports.getOne = (Model, options) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, filter) =>
   catchAsync(async (req, res, next) => {
+    if (filter) req.filter = filterUser(filter, req);
     const features = new APIFeatures(Model.find(req.filter), req.query)
       .filter()
       .sort()

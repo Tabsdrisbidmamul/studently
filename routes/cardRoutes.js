@@ -2,12 +2,14 @@ const express = require('express');
 const cardController = require('../controllers/cardController');
 const authController = require('../controllers/authController');
 
-// ROUTING
 const router = express.Router();
 
+// Registered Users only
+router.use(authController.protect);
 router
   .route('/')
-  .get(cardController.getAllCards)
+  // admins only
+  .get(authController.restrictTo('admin'), cardController.getAllCards)
   .post(cardController.createCard);
 
 router

@@ -2,14 +2,13 @@ const express = require('express');
 const deckController = require('../controllers/deckController');
 const authController = require('../controllers/authController');
 
-// ROUTING
 const router = express.Router();
 
-// router.use(authController.protect);
-
+router.use(authController.protect);
 router
   .route('/')
-  .get(deckController.getAllDecks)
+  // admins only
+  .get(authController.restrictTo('admin'), deckController.getAllDecks)
   .post(deckController.createDeck);
 
 router
