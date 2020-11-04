@@ -4,6 +4,7 @@
   "description": "Studently API",
   "main": "server.js",
   "scripts": {
+    "start": "node ./server.js",
     "start:dev": "set NODE_ENV=development&& nodemon ./server.js",
     "start:prod": "nodemon ./server.js",
     "debug": "ndb server.js",

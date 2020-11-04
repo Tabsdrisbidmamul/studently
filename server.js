@@ -46,11 +46,11 @@ process.on('unhandledRejection', (err) => {
 });
 
 // FOR HEROKU ON THEIR 24/7 SIGTERM SIGNAL
-// process.on('SIGTERM', () => {
-//   console.log('🖐 SIGTERM RECEIVED. Shutting down gracefully...');
-//   server.close(() => {
-//     console.log('🧨 Process terminated!');
-//   });
-// });
+process.on('SIGTERM', () => {
+  console.log('🖐 SIGTERM RECEIVED. Shutting down gracefully...');
+  server.close(() => {
+    console.log('🧨 Process terminated!');
+  });
+});
 
 module.exports = server;
