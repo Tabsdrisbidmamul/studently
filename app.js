@@ -25,12 +25,7 @@ app.use(
     origin: ['http://localhost:1234', 'http://127.0.0.1:1234'],
     credentials: true,
     // exposedHeaders: ["'Set-Cookie'"],
-    allowedHeaders: [
-      'X-Requested-With',
-      'X-HTTP-Method-Override',
-      'Content-Type',
-      'Accept',
-    ],
+    allowedHeaders: ['Origin', 'Accept', 'Content-Type', 'X-Requested-With'],
   })
 );
 
