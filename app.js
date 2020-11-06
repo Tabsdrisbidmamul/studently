@@ -22,7 +22,7 @@ const app = express();
 // implement cors to allow anyone to consume API
 app.use(
   cors({
-    origin: ["'http://localhost:1234'", "'http://127.0.0.1:1234'"],
+    origin: ['http://localhost:1234', 'http://127.0.0.1:1234'],
     credentials: true,
     exposedHeaders: ["'set-cookie'"],
   })
