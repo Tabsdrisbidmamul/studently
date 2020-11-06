@@ -24,14 +24,12 @@ app.use(
   cors({
     origin: ['http://localhost:1234', 'http://127.0.0.1:1234'],
     credentials: true,
-    exposedHeaders: ["'Set-Cookie'"],
+    // exposedHeaders: ["'Set-Cookie'"],
     allowedHeaders: [
-      'Content-type',
-      'Authorization',
-      'Access-Control-Allow-Methods',
-      'Access-Control-Allow-Credentials',
-      'Access-Control-Allow-Origin',
-      'Access-Control-Allow-Headers',
+      'X-Requested-With',
+      'X-HTTP-Method-Override',
+      'Content-Type',
+      'Accept',
     ],
   })
 );
