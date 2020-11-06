@@ -22,6 +22,7 @@ const app = express();
 // implement cors to allow anyone to consume API
 app.use(
   cors({
+    origin: '*',
     credentials: true,
   })
 );
