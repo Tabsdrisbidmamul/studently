@@ -20,26 +20,22 @@ const AppError = require('./utils/appError');
 const app = express();
 
 // implement cors to allow anyone to consume API
-app.use(
-  cors({
-    credentials: true,
-  })
-);
+app.use(cors());
 
 // SET Security HTTP headers
-// app.use(helmet());
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'", 'https:', 'http:', 'data:', 'ws:'],
-      baseUri: ["'self'"],
-      fontSrc: ["'self'", 'https:', 'http:', 'data:'],
-      imgSrc: ["'self'", 'data'],
-      scriptSrc: ["'self'", 'https:', 'http:', 'blob:'],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
-    },
-  })
-);
+app.use(helmet());
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'", 'https:', 'http:', 'data:', 'ws:'],
+//       baseUri: ["'self'"],
+//       fontSrc: ["'self'", 'https:', 'http:', 'data:'],
+//       imgSrc: ["'self'", 'data'],
+//       scriptSrc: ["'self'", 'https:', 'http:', 'blob:'],
+//       styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
+//     },
+//   })
+// );
 
 // dev logging
 if (process.env.NODE_ENV === 'development') {
