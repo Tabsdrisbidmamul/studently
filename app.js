@@ -19,7 +19,7 @@ const AppError = require('./utils/appError');
 
 const app = express();
 
-// implement cors
+// implement cors to allow anyone to consume API
 app.use(cors());
 
 // SET Security HTTP headers
