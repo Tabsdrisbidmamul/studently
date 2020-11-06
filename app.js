@@ -22,10 +22,11 @@ const app = express();
 // implement cors to allow anyone to consume API
 app.use(
   cors({
+    allowedHeaders: ['Origin', 'Accept', 'Content-Type', 'X-Requested-With'],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     origin: ['http://localhost:1234', 'http://127.0.0.1:1234'],
     credentials: true,
     // exposedHeaders: ["'Set-Cookie'"],
-    allowedHeaders: ['Origin', 'Accept', 'Content-Type', 'X-Requested-With'],
   })
 );
 
