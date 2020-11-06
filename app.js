@@ -26,7 +26,7 @@ app.use(
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     origin: ['http://localhost:1234', 'http://127.0.0.1:1234'],
     credentials: true,
-    // exposedHeaders: ["'Set-Cookie'"],
+    exposedHeaders: ["'set-cookie'"],
   })
 );
 
