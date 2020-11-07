@@ -26,12 +26,14 @@ const createSendJWT = (user, statusCode, req, res) => {
     ),
     httpOnly: true,
     path: '/',
-    sameSite: 'lax',
-    // secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+    // sameSite: 'lax',
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
   // remove password from output
   user.password = undefined;
+
+  res.header('Authorization', `'Bearer ${token}`);
 
   if (statusCode === 201) {
     res.status(statusCode).json({
