@@ -26,7 +26,7 @@ const createSendJWT = (user, statusCode, req, res) => {
     ),
     httpOnly: true,
     path: '/',
-    // sameSite: 'strict',
+    sameSite: 'lax',
     // secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
