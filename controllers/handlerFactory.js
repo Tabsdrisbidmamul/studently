@@ -70,7 +70,7 @@ exports.createOne = (Model) =>
     });
   });
 
-exports.getOne = (Model, options) =>
+exports.getOne = (Model, options, filter) =>
   catchAsync(async (req, res, next) => {
     let opt = {};
     const query = Model.findById(req.params.id);
@@ -96,6 +96,7 @@ exports.getOne = (Model, options) =>
 exports.getAll = (Model, filter) =>
   catchAsync(async (req, res, next) => {
     if (filter) req.filter = filterUser(filter, req);
+
     const features = new APIFeatures(Model.find(req.filter), req.query)
       .filter()
       .sort()
