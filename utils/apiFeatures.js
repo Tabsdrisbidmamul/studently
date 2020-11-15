@@ -1,3 +1,6 @@
+// Taken from https://github.com/jonasschmedtmann/complete-node-bootcamp/blob/master/4-natours/after-section-14/utils/apiFeatures.js
+// 
+
 class APIFeatures {
   constructor(query, queryString) {
     this.query = query;

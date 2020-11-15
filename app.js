@@ -19,7 +19,7 @@ const AppError = require('./utils/appError');
 
 const app = express();
 
-// implement cors to allow anyone to consume API
+// implement cors to allow listed origins to consume API
 app.use(
   cors({
     // allowedHeaders: [
@@ -79,32 +79,25 @@ app.use(xss());
 // Protect against request parameter pollution
 app.use(
   hpp({
-    whitelist: [
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize, ',
-      'difficulty',
-      'price',
-    ],
+    whitelist: [],
   })
 );
 
-// TO COMPRESS ALL INCOMING TEXT REQUEST AND COMPRESS THEM USING GZIP ETC.
+// To compress all incoming text request and compress them using gzip etc.
 app.use(compression());
 
-// ALL ROUTES
+// All routes
 app.use('/api/v0/users', userRouter);
 app.use('/api/v0/cards', cardRouter);
 app.use('/api/v0/decks', deckRouter);
 app.use('/api/v0/classrooms', classroomRouter);
 
-// UNHANDLED ROUTE ERROR MIDDLEWARE
+// Unhandled route error middleware
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 400));
 });
 
-// GLOBAL ERROR HANDLER MIDDLEWARE: SIGNATURE (ERROR, REQ, RES, NEXT)
+// Global error handler middleware: signature (error, req, res, next)
 app.use(globalErrorHandler);
 
 module.exports = app;

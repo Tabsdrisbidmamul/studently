@@ -1,3 +1,6 @@
+// taken from https://github.com/jonasschmedtmann/complete-node-bootcamp/blob/master/4-natours/after-section-14/controllers/authController.js
+// modified for CORS fix and getMe route
+
 const { promisify } = require('util');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
@@ -7,9 +10,6 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Email = require('../utils/email');
 const filterBody = require('../utils/filterObj');
-
-// Easy command line script to generate secret key for the JWT signature
-// node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
 
 const generateJWT = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {

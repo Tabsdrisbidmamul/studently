@@ -1,3 +1,6 @@
+// Taken from https://github.com/jonasschmedtmann/complete-node-bootcamp/blob/master/4-natours/after-section-14/models/userModel.js
+// modified for API users, using mostly the save middleware features, the schema has extras made by me
+
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');

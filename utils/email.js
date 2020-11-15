@@ -1,3 +1,6 @@
+// Taken from https://github.com/jonasschmedtmann/complete-node-bootcamp/blob/master/4-natours/after-section-14/utils/email.js
+// modified to remove pug template rendering
+
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 const htmlToText = require('html-to-text');

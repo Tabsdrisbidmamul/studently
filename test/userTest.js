@@ -10,47 +10,6 @@ const chaiThings = require('chai-things');
 const server = require('../server');
 const User = require('../models/userModel');
 
-// signup credentials for test new users
-const newStudent = {
-  name: 'Student',
-  email: 'student@example.com',
-  password: 'test1234',
-  passwordConfirm: 'test1234',
-  role: 'student',
-};
-
-const newTeacher = {
-  name: 'Teacher',
-  email: 'teacher@example.com',
-  password: 'test1234',
-  passwordConfirm: 'test1234',
-  role: 'teacher',
-};
-
-const newAdmin = {
-  name: 'Admin',
-  email: 'admin@example.com',
-  password: 'test1234',
-  passwordConfirm: 'test1234',
-  role: 'admin',
-};
-
-// Login credentials for test users
-const loginStudent = {
-  email: 'student@example.com',
-  password: 'test1234',
-};
-
-const loginTeacher = {
-  email: 'teacher@example.com',
-  password: 'test1234',
-};
-
-const loginAdmin = {
-  email: 'admin@example.com',
-  password: 'test1234',
-};
-
 module.exports = () => {
   describe('Users', () => {
     // beforeEach('Create a new user in the API', (done) => {
@@ -64,6 +23,59 @@ module.exports = () => {
     //       done();
     //     });
     // });
+
+    describe('/GET all users', () => {
+      beforeEach('Create a new student in the API', (done) => {
+        chai
+          .request(server)
+          .post('/api/v0/users/sign-up')
+          .send(newStudent)
+          .end((err, res) => {
+            res.body.should.have.property('token');
+            res.should.have.status(201);
+            done();
+          });
+      });
+
+      beforeEach('Create a new teacher in the API', (done) => {
+        chai
+          .request(server)
+          .post('/api/v0/users/sign-up')
+          .send(newTeacher)
+          .end((err, res) => {
+            res.body.should.have.property('token');
+            res.should.have.status(201);
+            done();
+          });
+      });
+
+      beforeEach('Create a new Admin in the API', (done) => {
+        chai
+          .request(server)
+          .post('/api/v0/users/sign-up')
+          .send(newTeacher)
+          .end((err, res) => {
+            token = res.body.token;
+            res.body.should.have.property('token');
+            res.should.have.status(201);
+            done();
+          });
+      });
+
+      it('it should GET all the users that have been created', (done) => {
+        chai
+          .request(server)
+          .get('api/v0/users')
+          .set({ Authorization: `Bearer ${token}` })
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.should.have.property('results');
+            res.should.have.property('data');
+            res.body.should.have.nested.property('data.user');
+            done();
+          });
+      });
+    });
 
     describe('/GET my-cards', () => {
       beforeEach('Log the newly created user in', (done) => {

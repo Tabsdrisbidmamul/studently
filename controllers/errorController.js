@@ -1,3 +1,6 @@
+// Taken from https://github.com/jonasschmedtmann/complete-node-bootcamp/blob/master/4-natours/after-section-14/controllers/errorController.js
+// modified to remove for server-site error catching
+
 const AppError = require('../utils/appError');
 
 const handleCastErrorDB = (err) => {

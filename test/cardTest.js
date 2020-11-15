@@ -12,14 +12,37 @@ const chaiThings = require('chai-things');
 
 const server = require('../server');
 const Card = require('../models/cardModel');
+const User = require('../models/userModel');
+
+const loginAdmin = require('./test');
 
 module.exports = () => {
   describe('Cards', () => {
     describe('/GET cards', () => {
+      beforeEach('Create the new admin user', (done) => {
+        chai
+          .request(server)
+          .post('/api/v0/users/sign-up')
+          .send(loginAdmin)
+          .end((err, res) => {
+            token = res.body.token;
+            res.body.should.have.property('token');
+            res.should.have.status(201);
+            done();
+          });
+      });
+
+      after('Delete the created admin user', async () => {
+        await User.findOneAndDelete({
+          email: 'admin2@example.com',
+        });
+      });
+
       it('It should GET all the cards', (done) => {
         chai
           .request(server)
           .get('/api/v0/cards')
+          .set({ Authorization: `Bearer ${token}` })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
