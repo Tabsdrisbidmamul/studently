@@ -1,7 +1,7 @@
 //Taken from https://github.com/jonasschmedtmann/complete-node-bootcamp/blob/master/4-natours/after-section-14/controllers/handlerFactory.js
-// modified to add for filters and fix for modelName
+// modified to add for filters and fix for modelName in response
 
-https: const catchAsync = require('../utils/catchAsync');
+const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 

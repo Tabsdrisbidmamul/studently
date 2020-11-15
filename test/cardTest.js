@@ -14,7 +14,7 @@ const server = require('../server');
 const Card = require('../models/cardModel');
 const User = require('../models/userModel');
 
-const loginAdmin = require('./test');
+const { newAdmin } = require('./test');
 
 module.exports = () => {
   describe('Cards', () => {
@@ -23,9 +23,10 @@ module.exports = () => {
         chai
           .request(server)
           .post('/api/v0/users/sign-up')
-          .send(loginAdmin)
+          .send(newAdmin)
           .end((err, res) => {
             token = res.body.token;
+            console.log(res.body);
             res.body.should.have.property('token');
             res.should.have.status(201);
             done();
