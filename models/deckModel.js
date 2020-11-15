@@ -5,7 +5,6 @@ const deckSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, 'A deck must have a name'],
-      unique: true,
       minlength: [5, 'A deck must have at least 5 characters'],
       maxlength: [100, 'A deck must have at most 100 characters'],
     },
@@ -36,6 +35,9 @@ const deckSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+// INDEXES
+deckSchema.index({ name: 1, user: 1 }, { unique: true });
 
 // MIDDLEWARE
 

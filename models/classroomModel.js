@@ -4,7 +4,6 @@ const classroomSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      unique: true,
       minlength: [5, 'A classroom must have more than 5 characters'],
       maxlength: [30, 'A classroom must have less than 30 characters'],
       required: [true, 'A classroom must have a name'],
@@ -37,6 +36,8 @@ const classroomSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+classroomSchema.index({ name: 1, teacher: 1 }, { unique: true });
 
 // MIDDLEWARE
 classroomSchema.pre(/^find/, function (next) {
