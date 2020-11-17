@@ -30,7 +30,11 @@ app.use(
     //   'Authorization',
     // ],
     // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: ['http://localhost:1234', 'http://127.0.0.1:1234'],
+    origin: [
+      'http://localhost:1234',
+      'http://127.0.0.1:1234',
+      'https://tabsdrisbidmamul.github.io',
+    ],
     credentials: true,
     exposedHeaders: ["'set-cookie'"],
   })
