@@ -7,12 +7,19 @@ const classroomSchema = new mongoose.Schema(
       minlength: [5, 'A classroom must have more than 5 characters'],
       maxlength: [30, 'A classroom must have less than 30 characters'],
       required: [true, 'A classroom must have a name'],
+      lowercase: true,
     },
 
     teacher: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: [true, 'A classroom must have a teacher'],
+    },
+
+    deck: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Deck',
+      required: [true, 'A classroom must have Deck'],
     },
 
     students: {

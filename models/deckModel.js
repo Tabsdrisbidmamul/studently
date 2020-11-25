@@ -7,6 +7,7 @@ const deckSchema = new mongoose.Schema(
       required: [true, 'A deck must have a name'],
       minlength: [5, 'A deck must have at least 5 characters'],
       maxlength: [100, 'A deck must have at most 100 characters'],
+      lowercase: true,
     },
 
     user: {

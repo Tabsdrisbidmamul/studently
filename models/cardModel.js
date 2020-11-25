@@ -7,6 +7,7 @@ const cardSchema = new mongoose.Schema(
       required: [true, 'A card must have a question'],
       minlength: [5, 'A card must have more than 5 characters'],
       maxlength: [300, 'A card cannot have more than 200 characters'],
+      lowercase: true,
     },
 
     answer: {
@@ -14,6 +15,7 @@ const cardSchema = new mongoose.Schema(
       required: [true, 'A card must have an answer'],
       minlength: [5, 'A card must have more than 5 characters'],
       maxlength: [300, 'A card cannot have more than 200 characters'],
+      lowercase: true,
     },
 
     user: {
