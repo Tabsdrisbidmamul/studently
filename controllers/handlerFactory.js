@@ -9,7 +9,8 @@ const getModelName = (Model) => Model.modelName.toLowerCase();
 
 // closures were returning different req obj, call fn where req obj is the same
 const filterUser = (role, req) => {
-  let filter = {};
+  let filter = role;
+  console.log(filter);
   switch (role) {
     case 'user':
       filter = { user: req.user.id };
@@ -17,9 +18,13 @@ const filterUser = (role, req) => {
     case 'teacher':
       filter = { teacher: req.user.id };
       break;
+    case 'student':
+      filter = { students: req.user.id };
+      break;
     default:
       break;
   }
+  console.log(filter);
   return filter;
 };
 
