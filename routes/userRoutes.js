@@ -12,7 +12,7 @@ router.get('/logout', authController.logout);
 // Everything below this is for registered users only
 router.use(authController.protect);
 
-router.get('/my-account', authController.getMe);
+router.get('/my-account', userController.getMe, userController.getUser);
 router.get('/my-cards', userController.getMyCards);
 router.get('/my-decks', userController.getMyDecks);
 router.get(

@@ -4,6 +4,11 @@ const Deck = require('../models/deckModel');
 const Classroom = require('../models/classroomModel');
 const factory = require('./handlerFactory');
 
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
+
 // admin only
 exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);

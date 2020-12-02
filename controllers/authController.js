@@ -51,21 +51,6 @@ const createSendJWT = (user, statusCode, req, res) => {
   }
 };
 
-exports.getMe = catchAsync(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
-
-  if (!user) {
-    return next(new AppError('Your account was not found'), 404);
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user,
-    },
-  });
-});
-
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
