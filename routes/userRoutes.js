@@ -30,7 +30,12 @@ router.get(
   authController.restrictTo('admin', 'student'),
   userController.getStudentClassrooms
 );
-
+router.patch(
+  '/update-me',
+  userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
+  userController.updateMe
+);
 // Everything below this point is for admins and teachers only
 router
   .route('/')

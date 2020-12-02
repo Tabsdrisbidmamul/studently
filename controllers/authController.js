@@ -60,8 +60,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     // remove in prod
     role: req.body.role,
   });
-  // const url = `${req.protocol}://${req.get('host')}/myAccount`;
-  // console.log(url);
+
   await new Email(newUser).sendWelcome();
 
   createSendJWT(newUser, 201, req, res);
