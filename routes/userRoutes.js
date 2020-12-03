@@ -36,6 +36,7 @@ router.patch(
   userController.resizeUserPhoto,
   userController.updateMe
 );
+router.patch('/update-password', authController.updatePassword);
 // Everything below this point is for admins and teachers only
 router
   .route('/')
