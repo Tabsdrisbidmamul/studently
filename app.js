@@ -22,17 +22,9 @@ const app = express();
 // implement cors to allow listed origins to consume API
 app.use(
   cors({
-    // allowedHeaders: [
-    //   'Origin',
-    //   'Accept',
-    //   'Content-Type',
-    //   'X-Requested-With',
-    //   'Authorization',
-    // ],
-    // methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     origin: [
-      'http://localhost:1234',
-      'http://127.0.0.1:1234',
+      'http://localhost:5000',
+      'http://127.0.0.1:5000',
       'https://tabsdrisbidmamul.github.io',
     ],
     credentials: true,
@@ -42,18 +34,6 @@ app.use(
 
 // SET Security HTTP headers
 app.use(helmet());
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'", 'https:', 'http:', 'data:', 'ws:'],
-//       baseUri: ["'self'"],
-//       fontSrc: ["'self'", 'https:', 'http:', 'data:'],
-//       imgSrc: ["'self'", 'data'],
-//       scriptSrc: ["'self'", 'https:', 'http:', 'blob:'],
-//       styleSrc: ["'self'", "'unsafe-inline'", 'https:', 'http:'],
-//     },
-//   })
-// );
 
 // dev logging
 if (process.env.NODE_ENV === 'development') {
