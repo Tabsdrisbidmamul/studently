@@ -111,9 +111,6 @@ exports.getAll = (Model, filter) =>
       .limitFields()
       .paginate();
 
-    // Will display statistics of the query
-    // const docs = await features.query.explain();
-
     const docs = await features.query;
     const modelName = getModelName(Model);
 

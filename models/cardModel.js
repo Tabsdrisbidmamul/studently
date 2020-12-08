@@ -35,17 +35,5 @@ const cardSchema = new mongoose.Schema(
 // Index on user field
 cardSchema.index({ user: 1, question: 1 }, { unique: true });
 
-// MIDDLEWARE
-
-// Populate the user field when queried
-// cardSchema.pre(/^find/, function (next) {
-//   this.populate({
-//     path: 'user',
-//     select: 'name role photo',
-//   });
-
-//   next();
-// });
-
 const Card = mongoose.model('Card', cardSchema);
 module.exports = Card;

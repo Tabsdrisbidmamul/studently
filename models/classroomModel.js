@@ -44,6 +44,7 @@ const classroomSchema = new mongoose.Schema(
   }
 );
 
+// Indexing
 classroomSchema.index({ name: 1, teacher: 1 }, { unique: true });
 
 // MIDDLEWARE
